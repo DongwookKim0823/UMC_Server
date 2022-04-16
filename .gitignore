@@ -1,0 +1,7 @@
+# Project exclude paths
+/.gradle/
+/build/
+/build/classes/java/main/
+.idea
+README.md
+src/main/resources/application.yml
