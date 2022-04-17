@@ -57,6 +57,12 @@ public class UserDao {
                 getUsersByIdxParams);
     }
 
+    public int deleteUsersByEmail(String email){
+        String deleteUsersByEmailQuery = "= email=?";
+        String deleteUsersByEmailParams = email;
+        return this.jdbcTemplate.update(deleteUsersByEmailQuery, deleteUsersByEmailParams);
+    }
+
     public int createUser(PostUserReq postUserReq){
         String createUserQuery = "insert into User (name, nickName, phone, email, password) VALUES (?,?,?,?,?)";
         Object[] createUserParams = new Object[]{postUserReq.getName(), postUserReq.getNickName(),postUserReq.getPhone(), postUserReq.getEmail(), postUserReq.getPassword()};

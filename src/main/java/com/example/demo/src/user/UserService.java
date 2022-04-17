@@ -3,6 +3,7 @@ package com.example.demo.src.user;
 
 import com.example.demo.config.BaseException;
 
+import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.src.user.model.PatchUserReq;
 import com.example.demo.src.user.model.PostUserReq;
 import com.example.demo.src.user.model.PostUserRes;
@@ -54,6 +55,18 @@ public class UserService {
             String jwt = jwtService.createJwt(userIdx);
             return new PostUserRes(jwt,userIdx);
         } catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void deleteUsersByEmail(String email)  throws BaseException{
+        try{
+            int result = userDao.deleteUsersByEmail(email);
+            if(result == 0){
+                throw new BaseException(DELETE_FAIL_USERNAME);
+            }
+        }
+        catch (Exception exception) {
             throw new BaseException(DATABASE_ERROR);
         }
     }
