@@ -9,8 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import static com.example.demo.config.BaseResponseStatus.POST_USERS_EMPTY_EMAIL;
-import static com.example.demo.config.BaseResponseStatus.POST_USERS_INVALID_EMAIL;
+import static com.example.demo.config.BaseResponseStatus.*;
 import static com.example.demo.utils.ValidationRegex.isRegexEmail;
 
 @RestController
@@ -89,19 +88,16 @@ public class UserController {
      */
     //Query String
     @ResponseBody
-    @GetMapping("") // (GET) 127.0.0.1:9000/users
-    public BaseResponse<GetUserRes> deleteUsers(@RequestParam(required = true) String Email) {
+    @PostMapping("/{userIdx}/status") // (GET) 127.0.0.1:9000/users
+    public BaseResponse<DeleteUserRes> deleteUsers(@PathVariable("userIdx") int userIdx, @RequestBody DeleteUserReq deleteUserReq) {
         try{
-            // TODO: email 관련한 짧은 validation 예시입니다. 그 외 더 부가적으로 추가해주세요!
-            if(Email.length()==0){
-                return new BaseResponse<>(POST_USERS_EMPTY_EMAIL);
+
+            if(userProvider.getUsersByIdx(deleteUserReq.getUserIdx()) == null){
+                return new BaseResponse<>(USERS_EMPTY_USER_ID);
             }
-            // 이메일 정규표현
-            if(!isRegexEmail(Email)){
-                return new BaseResponse<>(POST_USERS_INVALID_EMAIL);
-            }
-            GetUserRes getUsersRes = userService.deleteUsersByEmail(Email);
-            return new BaseResponse<>(getUsersRes);
+
+            DeleteUserRes deleteUserRes = userService.deleteUsersByIdx(deleteUserReq);
+            return new BaseResponse<>(deleteUserRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
