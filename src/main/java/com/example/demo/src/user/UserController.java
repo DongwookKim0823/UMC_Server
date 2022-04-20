@@ -83,24 +83,24 @@ public class UserController {
 
     /**
      * 회원 삭제 API
-     * [POST] /users/:userIdx
-     * @return BaseResponse<DeleteUserRes>
+     * [POST] /users/:userIdx/status
+     * @return BaseResponse<String>
      */
     //Query String
     @ResponseBody
-    @PostMapping("/{userIdx}/status") // (GET) 127.0.0.1:9000/:userIdx/status
+    @PostMapping("/{userIdx}/status") // (POST) 127.0.0.1:9000/:userIdx/status
     public BaseResponse<String> deleteUsers(@PathVariable("userIdx") int userIdx) {
         try{
 
-            if(userProvider.getUsersByIdx(userIdx) == null){
+            if(userIdx==0){
                 return new BaseResponse<>(USERS_EMPTY_USER_ID);
             }
 
             userService.deleteUsersByIdx(userIdx);
 
-            String result = "";
+            String result = "삭제되었습니다.";
             return new BaseResponse<>(result);
-            //return new BaseResponse(result);
+
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }

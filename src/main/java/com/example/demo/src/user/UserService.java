@@ -3,6 +3,7 @@ package com.example.demo.src.user;
 
 import com.example.demo.config.BaseException;
 
+import com.example.demo.config.BaseResponse;
 import com.example.demo.src.user.model.*;
 import com.example.demo.utils.JwtService;
 import com.example.demo.utils.SHA256;
@@ -58,7 +59,9 @@ public class UserService {
 
     public void deleteUsersByIdx(int userIdx) throws BaseException{
         try{
+
             int result = userDao.deleteUsersByIdx(userIdx);
+
             if(result == 0){
                 throw new BaseException(DELETE_FAIL_USERNAME);
             }

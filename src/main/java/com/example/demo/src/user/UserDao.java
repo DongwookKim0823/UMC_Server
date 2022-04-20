@@ -30,7 +30,8 @@ public class UserDao {
                         rs.getInt("userIdx"),
                         rs.getString("name"),
                         rs.getString("nickName"),
-                        rs.getString("email")
+                        rs.getString("email"),
+                        rs.getString("status")
                 ));
     }
 
@@ -42,7 +43,8 @@ public class UserDao {
                         rs.getInt("userIdx"),
                         rs.getString("name"),
                         rs.getString("nickName"),
-                        rs.getString("email")),
+                        rs.getString("email"),
+                        rs.getString("status")),
                 getUsersByEmailParams);
     }
 
@@ -55,12 +57,13 @@ public class UserDao {
                         rs.getInt("userIdx"),
                         rs.getString("name"),
                         rs.getString("nickName"),
-                        rs.getString("email")),
+                        rs.getString("email"),
+                        rs.getString("status")),
                 getUsersByIdxParams);
     }
 
     public int deleteUsersByIdx(int userIdx){
-        String deleteUsersByIdxQuery = "update User set status = 2 where userIdx = ?";
+        String deleteUsersByIdxQuery = "update User set status = 'DELETED' where userIdx = ?";
         int deleteUsersByIdxParams = userIdx;
         return this.jdbcTemplate.update(deleteUsersByIdxQuery,deleteUsersByIdxParams);
     }
