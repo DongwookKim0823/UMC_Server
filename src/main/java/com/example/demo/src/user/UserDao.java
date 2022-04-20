@@ -1,9 +1,11 @@
 package com.example.demo.src.user;
 
 
+import com.example.demo.src.user.model.DeleteUserRes;
 import com.example.demo.src.user.model.GetUserRes;
 import com.example.demo.src.user.model.PatchUserReq;
 import com.example.demo.src.user.model.PostUserReq;
+import org.hibernate.sql.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
@@ -57,10 +59,10 @@ public class UserDao {
                 getUsersByIdxParams);
     }
 
-    public int deleteUsersByEmail(String email){
-        String deleteUsersByEmailQuery = "= email=?";
-        String deleteUsersByEmailParams = email;
-        return this.jdbcTemplate.update(deleteUsersByEmailQuery, deleteUsersByEmailParams);
+    public int deleteUsersByIdx(int userIdx){
+        String deleteUsersByIdxQuery = "update User set status = 2 where userIdx = ?";
+        int deleteUsersByIdxParams = userIdx;
+        return this.jdbcTemplate.update(deleteUsersByIdxQuery,deleteUsersByIdxParams);
     }
 
     public int createUser(PostUserReq postUserReq){

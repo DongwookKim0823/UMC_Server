@@ -56,9 +56,9 @@ public class UserService {
         }
     }
 
-    public DeleteUserRes deleteUsersByIdx(int userIdx)  throws BaseException{
+    public void deleteUsersByIdx(int userIdx) throws BaseException{
         try{
-            int result = userDao.deleteUsersByEmail(userIdx);
+            int result = userDao.deleteUsersByIdx(userIdx);
             if(result == 0){
                 throw new BaseException(DELETE_FAIL_USERNAME);
             }
