@@ -38,7 +38,7 @@ public class UserController {
 
     @ResponseBody
     @GetMapping("/{userIdx}") // (GET) 127.0.0.1:9000/users
-    public BaseResponse<GetUserRes> getUsersFeed(@PathVariable("userIdx")int userIdx) {
+    public BaseResponse<GetUserFeedRes> getUsersFeed(@PathVariable("userIdx")int userIdx) {
         try{
 
             GetUserFeedRes getUserFeedRes = userProvider.retrieveUserFeed(userIdx, userIdx);
