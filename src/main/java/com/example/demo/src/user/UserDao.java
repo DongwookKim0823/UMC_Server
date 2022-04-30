@@ -20,20 +20,20 @@ public class UserDao {
     }
 
     public GetUserInfoRes selectUserInfo(int userIdx){
-        String selectUsersInfoQuery = "SELECT name, nickName, profileImgUrl, introduction, website,\n" +
+        String selectUsersInfoQuery = "SELECT nickName, name, profileImgUrl, introduction, website,\n" +
                 "       IF(postCount is null, 0, postCount) as postCount,\n" +
-                "       IF(follewerCount is null, 0, follewerCount) as follewerCount,\n" +
-                "       IF(follewingCount is null, 0, follewingCount) as follewingCount\n" +
+                "       IF(followerCount is null, 0, followerCount) as followerCount,\n" +
+                "       IF(followingCount is null, 0, followingCount) as followingCount\n" +
                 "FROM User\n" +
                 "        left join (SELECT userIdx, COUNT(postIdx) as postCount\n" +
                 "                    FROM Post\n" +
                 "                    WHERE status = 'ACTIVE'\n" +
                 "                    group by userIdx) as p on p.userIdx = User.userIdx\n" +
-                "        left join (SELECT followerIdx, COUNT(followIdx) as follewerCount\n" +
+                "        left join (SELECT followerIdx, COUNT(followIdx) as followerCount\n" +
                 "                FROM Follow\n" +
                 "                WHERE status = 'ACTIVE'\n" +
                 "                group by followerIdx) f1 on f1.followerIdx = User.userIdx\n" +
-                "        left join (SELECT followeeIdx, COUNT(followIdx) as follewingCount\n" +
+                "        left join (SELECT followeeIdx, COUNT(followIdx) as followingCount\n" +
                 "                FROM Follow\n" +
                 "                WHERE status = 'ACTIVE'\n" +
                 "                group by followeeIdx) f2 on f2.followeeIdx = User.userIdx\n" +
@@ -60,16 +60,15 @@ public class UserDao {
                 "        join User as u on p.userIdx = u.userIdx\n" +
                 "        join PostImgUrl as pi on pi.postIdx = p.postIdx\n" +
                 "WHERE pi.status = 'ACTIVE' and p.status = 'ACTIVE' and u.userIdx = ?\n" +
-                "group by p.postIdx\n" +
                 "order by p.createdAt desc;";
 
-        int se = userIdx;
+        int selectUserPostsParam = userIdx;
 
         return this.jdbcTemplate.query(selectUserPostsQuery,  // List 형태이면 -> query, List가 아니면 queryForObject
                 (rs,rowNum) -> new GetUserPostsRes(
                         rs.getInt("postIdx"),
                         rs.getString("postImgUrl")
-                ), selectUserPostsQuery);
+                ), selectUserPostsParam);
     }
 
     public GetUserRes getUsersByEmail(String email){
