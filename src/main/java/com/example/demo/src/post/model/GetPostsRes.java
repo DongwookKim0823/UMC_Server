@@ -12,7 +12,7 @@ import java.util.List;
 @AllArgsConstructor
 public class GetPostsRes {
     private int postIdx;
-    private  int userIdx;
+    private int userIdx;
     private String nickName;
     private String profileImgUrl;
     private String content;

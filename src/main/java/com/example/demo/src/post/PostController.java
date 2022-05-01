@@ -2,7 +2,10 @@ package com.example.demo.src.post;
 
 import com.example.demo.config.BaseException;
 import com.example.demo.config.BaseResponse;
+import com.example.demo.config.BaseResponseStatus;
 import com.example.demo.src.post.model.GetPostsRes;
+import com.example.demo.src.post.model.PostPostsReq;
+import com.example.demo.src.post.model.PostPostsRes;
 import com.example.demo.src.user.UserProvider;
 import com.example.demo.src.user.UserService;
 import com.example.demo.src.user.model.GetUserFeedRes;
@@ -42,6 +45,21 @@ public class PostController {
 
             List<GetPostsRes> getPostsRes = postProvider.retrievePosts(userIdx);
             return new BaseResponse<>(getPostsRes);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PostMapping("")
+    public BaseResponse<PostPostsRes> creatPosts(@RequestBody PostPostsReq postPostsReq) {
+        try{
+            if(postPostsReq.getContent().length()>450){
+                return new BaseResponse<>(BaseResponseStatus.POST_POSTS_INVALID_CONTENTS);
+            }
+
+            PostPostsRes postPostsRes = postService.createPosts(postPostsReq.getUserIdx(), postPostsReq);
+            return new BaseResponse<>(postPostsRes);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
         }
