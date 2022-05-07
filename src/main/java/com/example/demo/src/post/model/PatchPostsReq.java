@@ -10,7 +10,7 @@ import java.util.List;
 @Getter
 @Setter
 @AllArgsConstructor
-public class PostPostsRes {
-    private int postIdx;
-
+public class PatchPostsReq {
+    private int userIdx;
+    private String content;
 }
