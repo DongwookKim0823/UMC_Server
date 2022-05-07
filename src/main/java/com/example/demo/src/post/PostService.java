@@ -13,8 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-import static com.example.demo.config.BaseResponseStatus.DATABASE_ERROR;
-import static com.example.demo.config.BaseResponseStatus.USERS_EMPTY_USER_ID;
+import static com.example.demo.config.BaseResponseStatus.*;
 
 @Service
 public class PostService {
@@ -49,10 +48,35 @@ public class PostService {
     }
 
     public void modifyPost(int userIdx, int postIdx, PatchPostsReq patchPostsReq) throws BaseException {
+        if(postProvider.checkUserExist(userIdx)==0) {
+            throw new BaseException(USERS_EMPTY_USER_ID);
+        }
+
+        if(postProvider.checkPostExist(postIdx)==0) {
+            throw new BaseException(POSTS_EMPTY_POST_ID);
+        }
 
         try{
 
-            int result = postDao.updatePosts(postIdx, patchPostsReq.getContent());
+            int result = postDao.updatePost(postIdx, patchPostsReq.getContent());
+            if(result==0) {
+                throw new BaseException(MODIFY_FAIL_POST);
+            }
+
+        }
+        catch (Exception exception) {
+            throw new BaseException(DATABASE_ERROR);
+        }
+    }
+
+    public void deletePost(int postIdx) throws BaseException {
+
+        try{
+
+            int result = postDao.deletePost(postIdx);
+            if(result==0) {
+                throw new BaseException(DELETE_FAIL_POST);
+            }
 
         }
         catch (Exception exception) {

@@ -77,6 +77,15 @@ public class PostDao {
 
     }
 
+    public int checkPostExist(int postIdx){
+        String checkPostExistQuery = "select exists(select postIdx from Post where postIdx = ?)";
+        int checkPostExistParams = postIdx;
+        return this.jdbcTemplate.queryForObject(checkPostExistQuery,
+                int.class,
+                checkPostExistParams);
+
+    }
+
     public int insertPosts(int userIdx, String content){
         String insertPostQuery = "insert into Post(userIdx, content) values (?,?)";
         Object []insertPostParams = new Object[] {userIdx, content};
@@ -96,6 +105,22 @@ public class PostDao {
 
         String lastInsertIdxQuery = "select last_insert_id()";
         return this.jdbcTemplate.queryForObject(lastInsertIdxQuery, int.class);
+
+    }
+
+    public int updatePost(int postIdx, String content){
+        String updatePostQuery = "update Post set content=? where postIdx=?";
+        Object []updatePostParams = new Object[] {content, postIdx};
+        return this.jdbcTemplate.update(updatePostQuery, updatePostParams);
+
+
+    }
+
+    public int deletePost(int postIdx){
+        String deletePostQuery = "update Post set status='INACTIVE' where postIdx=?";
+        int deletePostParams = postIdx;
+        return this.jdbcTemplate.update(deletePostQuery, deletePostParams);
+
 
     }
 }

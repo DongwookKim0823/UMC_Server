@@ -78,7 +78,20 @@ public class PostController {
             }
 
             postService.modifyPost(patchPostsReq.getUserIdx(), postIdx, patchPostsReq);
-            String result = "회원 정보 수정을 완료하였습니다.";
+            String result = "게시물 정보 수정을 완료하였습니다.";
+            return new BaseResponse<>(result);
+        } catch(BaseException exception){
+            return new BaseResponse<>((exception.getStatus()));
+        }
+    }
+
+    @ResponseBody
+    @PatchMapping("/{postIdx}/status")
+    public BaseResponse<String> deletePost(@PathVariable ("postIdx") int postIdx) {
+        try{
+
+            postService.deletePost(postIdx);
+            String result = "게시물 삭제를 성공했습니다.";
             return new BaseResponse<>(result);
         } catch(BaseException exception){
             return new BaseResponse<>((exception.getStatus()));
