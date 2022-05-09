@@ -47,7 +47,7 @@ public class AuthService {
 
         }
 
-        /*if(user.getPwd().equals(encryptPwd)){
+        if(user.getPwd().equals(encryptPwd)){
 
             int userIdx = user.getUserIdx();
             String jwt = jwtService.createJwt(userIdx);
@@ -56,11 +56,7 @@ public class AuthService {
         } else {
 
             throw new BaseException(FAILED_TO_LOGIN);
-        }*/
-        int userIdx = user.getUserIdx();
-        String jwt = jwtService.createJwt(userIdx);
-
-        return new PostLoginRes(userIdx, jwt);
+        }
 
     }
 
